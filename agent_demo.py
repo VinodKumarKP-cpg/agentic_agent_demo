@@ -1,13 +1,14 @@
 import asyncio
 import logging
-from typing import Dict, List, Any, Optional
-import streamlit as st
+from typing import Dict, List, Any
+
 import boto3
+import nest_asyncio
+import streamlit as st
 from botocore.config import Config
 from botocore.exceptions import ClientError
 from langchain_aws import ChatBedrock
 from langgraph.prebuilt import create_react_agent
-import nest_asyncio
 
 # Apply nest_asyncio for Streamlit compatibility
 nest_asyncio.apply()
@@ -102,13 +103,22 @@ class AgentService:
 
     def __init__(self):
         self.llm_manager = BedrockLLMManager()
-        self.tool_manager = ToolManager([{
-            'name': 'git_utils',
-            'url': 'http://localhost:8000/mcp'
-        },
+        self.tool_manager = ToolManager([
+            {
+                'name': 'git_utils_server',
+                'command': 'uv',
+                'args': [
+                    "run", "--with", "git+https://github.com/Capgemini-Innersource/ptr_mcp_servers_registry.git",
+                    "git-mcp-server"
+                ]
+            },
             {
                 'name': 'env_lookup',
-                'url': 'http://localhost:8005/mcp'
+                'command': 'uv',
+                'args': [
+                    "run", "--with", "git+https://github.com/Capgemini-Innersource/ptr_mcp_servers_registry.git",
+                    "env-lookup-mcp-server"
+                ]
             },
             {
                 'name': 'weather_lookup',
