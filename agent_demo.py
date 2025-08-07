@@ -108,7 +108,7 @@ class AgentService:
                 'name': 'git_utils_server',
                 'command': 'uv',
                 'args': [
-                    "run", "--with", "git+https://github.com/Capgemini-Innersource/ptr_mcp_servers_registry.git",
+                    "run", "--python", "3.11", "--with", "git+https://github.com/Capgemini-Innersource/ptr_mcp_servers_registry.git",
                     "git-mcp-server"
                 ]
             },
@@ -121,8 +121,8 @@ class AgentService:
                 ]
             },
             {
-                'name': 'weather_lookup',
-                'url': 'http://localhost:8020/mcp'
+                'name': 'jira_utils',
+                'url': 'http://localhost:8004/mcp'
             }
         ])
         self._agent = None
